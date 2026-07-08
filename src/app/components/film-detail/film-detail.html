@@ -1,1 +1,49 @@
-<p>film-detail works!</p>
+<nav class="navbar navbar-dark bg-dark border-bottom border-danger">
+  <div class="container">
+    <a class="navbar-brand text-danger fw-bold" routerLink="/home">🎬 CinemaTrack</a>
+    <a routerLink="/home" class="btn btn-outline-secondary btn-sm">← Geri</a>
+  </div>
+</nav>
+
+<div class="container mt-4">
+
+  @if (film) {
+  <div class="card mb-4">
+    <div class="card-body">
+      <h3 class="text-danger">{{ film.title }}</h3>
+      <p class="text-muted">{{ film.originalTitle }}</p>
+      <div class="d-flex gap-3 text-muted small">
+        <span>🎭 {{ film.genre }}</span>
+        <span>⏱ {{ film.duration }} dk</span>
+        <span>📅 {{ film.releaseDate }}</span>
+      </div>
+    </div>
+  </div>
+  }
+
+  <h5 class="mb-3">Seanslar</h5>
+
+  @if (seanslar.length === 0) {
+  <div class="text-center text-muted py-4">
+    <p>Bu film için henüz seans tanımlanmamış.</p>
+  </div>
+  }
+
+  <div class="row g-3">
+    @for (seans of seanslar; track seans.id) {
+    <div class="col-md-4">
+      <div class="card border-secondary">
+        <div class="card-body">
+          <h6 class="text-danger mb-2">{{ seans.salonName }}</h6>
+          <p class="text-muted small mb-1">📅 {{ seans.startTime | slice:0:10 }}</p>
+          <p class="text-muted small mb-3">🕐 {{ seans.startTime | slice:11:16 }}</p>
+          <p class="mb-3"><span class="badge bg-danger">{{ seans.price }} ₺</span></p>
+          <a [routerLink]="['/rezervasyon', seans.id]" class="btn btn-outline-danger btn-sm w-100">
+            Bilet Al
+          </a>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</div>
