@@ -1,1 +1,69 @@
-<p>profil works!</p>
+<nav class="navbar navbar-dark bg-dark border-bottom border-danger">
+  <div class="container">
+    <a class="navbar-brand text-danger fw-bold" routerLink="/home">🎬 CinemaTrack</a>
+    <div class="d-flex align-items-center gap-3">
+      <span class="text-muted small">{{ email }}</span>
+      <button (click)="logout()" class="btn btn-outline-danger btn-sm">Çıkış</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+
+  <h4 class="mb-4">Profilim</h4>
+
+  <h5 class="mb-3">Rezervasyonlarım</h5>
+
+  @if (rezervasyonlar.length === 0) {
+  <div class="text-center text-muted py-3 mb-4">
+    <p>Henüz rezervasyon yok.</p>
+  </div>
+  }
+
+  <div class="d-flex flex-column gap-3 mb-5">
+    @for (rezervasyon of rezervasyonlar; track rezervasyon.id) {
+    <div class="card border-secondary">
+      <div class="card-body d-flex justify-content-between align-items-center">
+        <div>
+          <p class="mb-1 small text-muted">Rezervasyon #{{ rezervasyon.id }}</p>
+          <p class="mb-1 small text-muted">Koltuk ID: {{ rezervasyon.seansKoltukId }}</p>
+          <p class="mb-0 small text-muted">{{ rezervasyon.rezervasyonTarihi | slice:0:10 }}</p>
+        </div>
+        <span class="badge"
+              [class.bg-warning]="rezervasyon.rezervasyonDurumu === 'PENDING'"
+              [class.bg-success]="rezervasyon.rezervasyonDurumu === 'CONFIRMED'"
+              [class.bg-secondary]="rezervasyon.rezervasyonDurumu === 'CANCELLED'">
+            {{ rezervasyon.rezervasyonDurumu }}
+          </span>
+      </div>
+    </div>
+    }
+  </div>
+
+  <h5 class="mb-3">Biletlerim</h5>
+
+  @if (biletler.length === 0) {
+  <div class="text-center text-muted py-3">
+    <p>Henüz bilet yok.</p>
+  </div>
+  }
+
+  <div class="d-flex flex-column gap-3">
+    @for (bilet of biletler; track bilet.id) {
+    <div class="card border-secondary">
+      <div class="card-body d-flex justify-content-between align-items-center">
+        <div>
+          <p class="mb-1 small text-muted">Bilet #{{ bilet.id }}</p>
+          <p class="mb-0 small text-muted">Koltuk ID: {{ bilet.seansKoltukId }}</p>
+        </div>
+        <span class="badge"
+              [class.bg-success]="bilet.biletDurumu === 'ACTIVE'"
+              [class.bg-secondary]="bilet.biletDurumu === 'USED'"
+              [class.bg-danger]="bilet.biletDurumu === 'CANCELLED'">
+            {{ bilet.biletDurumu }}
+          </span>
+      </div>
+    </div>
+    }
+  </div>
+</div>
