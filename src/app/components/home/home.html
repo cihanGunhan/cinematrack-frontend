@@ -1,1 +1,62 @@
-<p>home works!</p>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-danger">
+  <div class="container">
+    <a class="navbar-brand text-danger fw-bold" routerLink="/home">🎬 CinemaTrack</a>
+    <div class="navbar-nav me-auto">
+      <a class="nav-link" routerLink="/home">Filmler</a>
+    </div>
+    <div class="d-flex align-items-center gap-3">
+      @if (isLoggedIn()) {
+      <span class="text-muted small">{{ email }}</span>
+      <a routerLink="/profil" class="btn btn-outline-secondary btn-sm">Profilim</a>
+      <button (click)="logout()" class="btn btn-outline-danger btn-sm">Çıkış</button>
+      } @else {
+      <a routerLink="/login" class="btn btn-outline-danger btn-sm">Giriş Yap</a>
+      <a routerLink="/register" class="btn btn-danger btn-sm">Kayıt Ol</a>
+      }
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title mb-3">TMDB'den Film Ekle</h5>
+      <div class="d-flex gap-2">
+        <input
+          type="number"
+          class="form-control"
+          [(ngModel)]="tmdbId"
+          placeholder="TMDB Film ID (örn: 603 = Matrix)" />
+        <button (click)="fetchFilm()" class="btn btn-danger px-4">Ekle</button>
+      </div>
+      @if (searchError) {
+      <div class="alert alert-danger mt-2 py-2">{{ searchError }}</div>
+      }
+    </div>
+  </div>
+
+  @if (films.length === 0) {
+  <div class="text-center text-muted py-5">
+    <p>Henüz film yok. TMDB ID ile film ekleyin.</p>
+  </div>
+  }
+
+  <div class="row g-4">
+    @for (film of films; track film.id) {
+    <div class="col-md-3">
+      <div class="card h-100 border-secondary">
+        <div class="card-body d-flex flex-column">
+          <h6 class="card-title text-danger">{{ film.title }}</h6>
+          <p class="text-muted small mb-1">{{ film.originalTitle }}</p>
+          <p class="text-muted small mb-1">{{ film.genre }}</p>
+          <p class="text-muted small mb-auto">{{ film.duration }} dk  |  {{ film.releaseDate }}</p>
+          <a [routerLink]="['/film', film.id]" class="btn btn-outline-danger btn-sm mt-3">
+            Seansları Gör
+          </a>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</div>
